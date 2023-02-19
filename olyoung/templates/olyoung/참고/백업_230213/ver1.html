@@ -1,0 +1,141 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.108.0">
+    <title>🎁추천해영</title>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <style>
+      .buttonStyle1 {
+        background-color: white;
+        font-size: x-large;
+        font-weight: bolder;
+      }
+
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <!--<link href="heroes.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  </head>
+  <body>
+    
+<main>
+<div style="background-color:#e6f6eb;">
+  <h1 class="visually-hidden">나에게 맞는 상품 추천받기</h1>
+</div>
+
+  <div class="px-4 py-5 my-5">
+    <!--<img class="d-block mx-auto mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
+    <h1 class="display-5 fw-bold" style="font-size:32px">나의 피부 컨디션&관심 카테고리와 키워드</h1>
+    <p style="text-align:left">나와 비슷한 피부 컨디션을 가진 고객의 리뷰와 나에게 딱 맞는 상품을 모아볼 수 있어요</p>
+    <div class="col-lg-6 mx-auto">
+    
+    <form action="{% url 'ver1_1'%}" method="GET">
+      {% csrf_token %}
+      <!--값전송 확인용
+      <input name="username" placeholder="name"/>-->
+      <p><br></p>
+      <p class="text-left" style="font-size:24px">피부타입</p>
+      <div style="margin: 0px 0px 0px 0px">
+        <!--<div class="d-grid gap-2 d-sm-flex justify-content-sm-center">-->
+        <!--https://getbootstrap.kr/docs/5.2/forms/checks-radios/#%EB%B2%84%ED%8A%BC-%ED%86%A0%EA%B8%80-->
+          <input type="radio" class="btn-check" name="skintype_option" value="건성" id="btn1-1">    
+          <label class="btn btn-outline-secondary btn-lg" for="btn1-1">건성</label>
+        
+          <input type="radio" class="btn-check" name="skintype_option" value="복합성" id="btn1-4">
+          <label class="btn btn-outline-secondary btn-lg" for="btn1-4">복합성</label>
+        
+          <input type="radio" class="btn-check" name="skintype_option" value="지성" id="btn1-6">
+          <label class="btn btn-outline-secondary btn-lg" for="btn1-6">지성</label>
+
+      </div>
+
+      <p><br></p>
+      <p class="text-left" style="font-size:24px">피부고민</p>
+      <p class="text-left">복수선택 가능</p>
+      <div style="margin: 0px 0px 0px 0px">
+      <!--<div class="d-grid gap-2 d-sm-flex justify-content-sm-center">-->
+        <input type="checkbox" class="btn-check" name="skin_concern" value="아토피" id="btn2-1">
+        <label class="btn btn-outline-secondary btn-lg" for="btn2-1">아토피</label>
+
+        <input type="checkbox" class="btn-check" name="skin_concern" value="탄력" id="btn2-2">
+        <label class="btn btn-outline-secondary btn-lg" for="btn2-2">탄력</label>
+
+        <input type="checkbox" class="btn-check" name="skin_concern" value="피지과다" id="btn2-3">
+        <label class="btn btn-outline-secondary btn-lg" for="btn2-3">피지과다</label>
+
+        <input type="checkbox" class="btn-check" name="skin_concern" value="모공" id="btn2-4">
+        <label class="btn btn-outline-secondary btn-lg" for="btn2-4">모공</label>
+
+        <input type="checkbox" class="btn-check" name="skin_concern" value="트러블" id="btn2-5">
+        <label class="btn btn-outline-secondary btn-lg" for="btn2-5">트러블</label>
+
+        <input type="checkbox" class="btn-check" name="skin_concern" value="각질" id="btn2-6">
+        <label class="btn btn-outline-secondary btn-lg" for="btn2-6">각질</label>
+
+        <input type="checkbox" class="btn-check" name="skin_concern" value="잡티" id="btn2-7">
+        <label class="btn btn-outline-secondary btn-lg" for="btn2-7">잡티</label>
+
+        <input type="checkbox" class="btn-check" name="skin_concern" value="블랙헤드" id="btn2-8">
+        <label class="btn btn-outline-secondary btn-lg" for="btn2-8">블랙헤드</label>
+
+        <input type="checkbox" class="btn-check" name="skin_concern" value="홍조" id="btn2-9">
+        <label class="btn btn-outline-secondary btn-lg" for="btn2-9">홍조</label>
+
+        <input type="checkbox" class="btn-check" name="skin_concern" value="주름" id="btn2-10">
+        <label class="btn btn-outline-secondary btn-lg" for="btn2-10">주름</label>
+
+        <input type="checkbox" class="btn-check" name="skin_concern" value="다크서클" id="btn2-11">
+        <label class="btn btn-outline-secondary btn-lg" for="btn2-11">다크서클</label>
+
+        <input type="checkbox" class="btn-check" name="skin_concern" value="미백" id="btn2-12">
+        <label class="btn btn-outline-secondary btn-lg" for="btn2-12">미백</label>
+
+      </div>
+
+      <p><br></p>
+      <p class="text-left" style="font-size:24px">관심 카테고리</p>
+      <div>
+
+        <input type="radio" class="btn-check" name="category" value="skincare" id="btn3-1">
+        <label class="btn btn-outline-secondary btn-lg" for="btn3-1">스킨케어</label>
+
+        <input type="radio" class="btn-check" name="category" value="cleansing" id="btn3-2">
+        <label class="btn btn-outline-secondary btn-lg" for="btn3-2">클렌징</label>
+
+        <input type="radio" class="btn-check" name="category" value="suncare" id="btn3-3">
+        <label class="btn btn-outline-secondary btn-lg" for="btn3-3">선케어</label>
+
+        <input type="radio" class="btn-check" name="category" value="maskpack" id="btn3-4">
+        <label class="btn btn-outline-secondary btn-lg" for="btn3-4">마스크팩</label>
+
+        <input type="radio" class="btn-check" name="category" value="bodycare" id="btn3-5">
+        <label class="btn btn-outline-secondary btn-lg" for="btn3-5">바디케어</label>
+      
+        <!--<div class="d-grid gap-2 d-sm-flex justify-content-sm-center">-->
+        <!--<button type="button" class="btn btn-outline-secondary btn-lg active">스킨케어</button>
+        <button type="button" class="btn btn-outline-secondary btn-lg active">클렌징</button>
+        <button type="button" class="btn btn-outline-secondary btn-lg active">선케어</button>
+        <button type="button" class="btn btn-outline-secondary btn-lg active">마스크팩</button>
+        <button type="button" class="btn btn-outline-secondary btn-lg active">바디케어</button>-->
+      </div>
+
+      <br>
+      <input class="btn btn-success btn-lg" type="submit" value="Pick!" onClick="location.href='ver1_1'">
+    </form>
+    </div>
+  </div>
+
+</main>
+
+    <!--<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>-->
+      
+  </body>
+</html>

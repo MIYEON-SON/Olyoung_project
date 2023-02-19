@@ -1,0 +1,290 @@
+{% load static %}
+<!DOCTYPE html>
+<!--https://startbootstrap.com/previews/shop-item-->
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>🎁추천해영</title>
+        <style>
+          span.special {
+           color: rgb(10, 193, 114);
+          }
+        </style>
+        <!-- Favicon
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />-->
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <!--<link href="./css/styles.css" rel="stylesheet" />-->
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <script src="https://cdn.plot.ly/plotly-2.18.0.min.js"></script>
+    </head>
+    <body>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand fw-bolder" href="#!">추천 아이템</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">다시 추천받기</a></li>
+                        <!--<li class="nav-item"><a class="nav-link" href="#!">About</a></li>-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#!">All Products</a></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <form action="{% url 'ver2_result1'%}" method="GET">
+            <!-- Product section-->
+            <section class="py-5">
+                <div class="container px-4 px-lg-5 my-5">
+                    <h2 class="fw-bolder mb-4">첫번째 추천 제품</h2>
+                    <div class="row gx-4 gx-lg-5 align-items-center">
+                        <div class="col-md-6"><img style="width:400px; height:500px;" class="card-img-top mb-5 mb-md-0" src="{{imgpath_f.0}}" alt="..." /></div>
+                        <div class="col-md-6">
+                            <div class="small mb-1">{{category_f.0}}</div>
+                            <h1 class="display-6 fw-bolder">{{product_name_f.0}}</h1>
+                            <div class="fs-5 mb-5">
+                                <span>{{price_f.0}}원</span>
+                            </div>
+                            <div class="d-flex mb-2">
+                                <div class="bi-star-fill"> {{p_score.0}}점</div>
+                            </div>
+                            <p class="lead fw-bolder">리뷰로 알아보는 제품 키워드</p>
+                            <p class="lead">{{keyword_f.0}}</p>
+                                <button class="btn btn-outline-dark flex-shrink-0">
+                                    <i></i>
+                                    할인쿠폰 받기
+                                </button>
+                                <button class="btn btn-outline-dark flex-shrink-0" type="submit" name="product_name_f1" value="{{product_name_f.0}}" onclick="location.href='ver2_result1' ">
+                                    <i class="bi-cart-fill me-1"></i>
+                                    구매하기
+                                </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+            <!-- Item Property section-->
+            <section class="py-5">
+                <div id='myDiv' class="col-md-6 left" style="float:left;"></div><!--class="col-md-6"-->
+                    <!--<h2 class="fw-bolder mb-4">추천 제품 특성 그래프 </h2>
+                    plotly 참고 https://plotly.com/javascript/getting-started/-->
+                    <script>
+                        var data = JSON.parse("{{ targetJson|escapejs }}")
+                        data = [
+                        {
+                        type: 'scatterpolar',
+                        name:'product1',
+                        r: data['product1'],
+                        theta: ['피부타입: {{skintype}}', '피부고민: {{skinconcern1}}', '피부고민: {{skinconcern2}}','속성: {{keywords2.0}}', '속성: {{keywords2.1}}'],
+                        fill: 'toself',
+                        marker : { color : 'green'}
+                        }
+                       ]                        
+                       layout = {
+                        polar: {
+                            radialaxis: {
+                            visible: true,
+                            range: [0, 1]
+                            }
+                        },
+                        title: {
+                            text: '추천 상품 속성 그래프',                            
+                            font: {
+                            size: 24
+                            },
+                            x : 0.47
+                        }
+                       }
+                    Plotly.newPlot("myDiv", data, layout)
+                    </script>
+                <div class="right" style="float:left;"></div><!--class="col-md-6"
+                    <div class="small mb-1"></div>-->
+                    <br><br><br><br>
+                    <p class="lead fw-bolder">"해당 제품은 고객님의 피부타입에 <span class="special">{{p_skin_rate.0}}%</span> 잘 맞아요."</p>
+                    <p class="lead fw-bolder">"동일한 피부고민 <span class="special">{{skinconcern1}}</span>(을)를 가진 고객들은 해당 제품군을 <span class="special">{{p_con_rate.0}}%</span> 구매했어요."</p>
+                    <p class="lead fw-bolder">"동일한 피부고민 <span class="special">{{skinconcern2}}</span>(을)를 가진 고객들은 해당 제품군을 <span class="special">{{p_con_rate.1}}%</span> 구매했어요."</p>
+                    <p class="lead fw-bolder">"해당 제품 리뷰에서 키워드 <span class="special">{{keywords2.0}}</span>(이)가 언급된 비율은 <span class="special">{{p_kw_fr.0}}%</span> 에요."</p>
+                    <p class="lead fw-bolder">"해당 제품 리뷰에서 키워드 <span class="special">{{keywords2.1}}</span>(이)가 언급된 비율은 <span class="special">{{p_kw_fr.1}}%</span> 에요."</p>
+                    <br><br><br><br>
+            </section>
+
+        <form action="{% url 'ver2_result2'%}" method="GET">
+            <section class="py-5">
+                <div class="container px-4 px-lg-5 my-5">
+                    <h2 class="fw-bolder mb-4">두번째 추천 제품 </h2>
+                    <div class="row gx-4 gx-lg-5 align-items-center">
+                    <div class="col-md-6"><img style="width:400px; height:500px;" class="card-img-top mb-5 mb-md-0" src="{{imgpath_f.1}}" alt="..." /></div>
+                    <div class="col-md-6">
+                        <div class="small mb-1">{{category_f.1}}</div>
+                        <h1 class="display-6 fw-bolder">{{product_name_f.1}}</h1>
+                        <div class="fs-5 mb-5">
+                            <span>{{price_f.1}}원</span>
+                        </div>
+                        <div class="d-flex mb-2">
+                            <div class="bi-star-fill"> {{p_score.1}}점</div>
+                        </div>
+                        <p class="lead fw-bolder">리뷰로 알아보는 제품 키워드</p>
+                        <p class="lead">{{keyword_f.1}}</p>
+                        <button class="btn btn-outline-dark flex-shrink-0">
+                            <i></i>
+                            할인쿠폰 받기
+                        </button>
+                        <button class="btn btn-outline-dark flex-shrink-0" type="submit" name="product_name_f2" value="{{product_name_f.1}}" onclick="location.href='ver2_result2' ">
+                            <i class="bi-cart-fill me-1"></i>
+                            구매하기
+                        </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+            <!-- Related items section-->
+            <section class="py-5">
+                <div id='myDiv2' class="col-md-6" style="float:left;"></div>
+                    <!--<h2 class="fw-bolder mb-4">추천 제품 특성 그래프 </h2>
+                    <div class="col-md-6"></div>-->
+                    <script>
+                        var data = JSON.parse("{{ targetJson|escapejs }}")
+                        data = [
+                        {
+                         type: 'scatterpolar',
+                        r: data['product2'],
+                        theta: ['피부타입: {{skintype}}', '피부고민: {{skinconcern1}}', '피부고민: {{skinconcern2}}','속성: {{keywords2.0}}', '속성: {{keywords2.1}}'],
+                        fill: 'toself',
+                        marker : { color : 'green'}
+                        },
+                        ]
+
+                        layout = {
+                        polar: {
+                            radialaxis: {
+                            visible: true,
+                            range: [0, 1]
+                            }
+                        },
+                        title: {
+                            text: '추천 상품 속성 그래프',
+                            font: {
+                            size: 24
+                            },
+                            x : 0.47
+                        }
+                        }
+
+                    Plotly.newPlot("myDiv2", data, layout)
+                    </script>
+                <div class="right" style="float:left;"></div>
+                    <br><br><br><br>
+                    <p class="lead fw-bolder">"해당 제품은 고객님의 피부타입에 <span class="special">{{p_skin_rate.1}}%</span> 잘 맞아요."</p>
+                    <p class="lead fw-bolder">"동일한 피부고민 <span class="special">{{skinconcern1}}</span>(을)를 가진 고객들은 해당 제품군을 <span class="special">{{p_con_rate.0}}%</span> 구매했어요."</p>
+                    <p class="lead fw-bolder">"동일한 피부고민 <span class="special">{{skinconcern2}}</span>(을)를 가진 고객들은 해당 제품군을 <span class="special">{{p_con_rate.1}}%</span> 구매했어요."</p>
+                    <p class="lead fw-bolder">"해당 제품 리뷰에서 키워드 <span class="special">{{keywords2.0}}</span>(이)가 언급된 비율은 <span class="special">{{p_kw_fr.2}}%</span> 에요."</p>
+                    <p class="lead fw-bolder">"해당 제품 리뷰에서 키워드 <span class="special">{{keywords2.1}}</span>(이)가 언급된 비율은 <span class="special">{{p_kw_fr.3}}%</span> 에요."</p>
+                    <br><br><br><br>
+            </section>
+        <form action="{% url 'ver2_result3'%}" method="GET">
+            <section class="py-5">
+                <div class="container px-4 px-lg-5 my-5">
+                    <h2 class="fw-bolder mb-4">세번째 추천 제품 </h2>
+                    <div class="row gx-4 gx-lg-5 align-items-center">
+                    <div class="col-md-6"><img style="width:400px; height:500px;" class="card-img-top mb-5 mb-md-0" src="{{imgpath_f.2}}" alt="..." /></div>
+                    <div class="col-md-6">
+                        <div class="small mb-1">{{category_f.2}}</div>
+                        <h1 class="display-6 fw-bolder">{{product_name_f.2}}</h1>
+                        <div class="fs-5 mb-5">
+                            <span>{{price_f.2}}원</span>
+                        </div>
+                        <div class="d-flex mb-2">
+                            <div class="bi-star-fill"> {{p_score.2}}점</div>
+                        </div>
+                        <p class="lead fw-bolder">리뷰로 알아보는 제품 키워드</p>
+                        <p class="lead">{{keyword_f.2}}</p>
+                        <button class="btn btn-outline-dark flex-shrink-0">
+                            <i></i>
+                            할인쿠폰 받기
+                        </button>
+                        <button class="btn btn-outline-dark flex-shrink-0" type="submit" name="product_name_f3" value="{{product_name_f.2}}" onclick="location.href='ver2_result3' ">
+                            <i class="bi-cart-fill me-1"></i>
+                            구매하기
+                        </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+            <!-- Related items section-->
+            <section class="py-5">
+                <div id='myDiv3' class="col-md-6" style="float:left;"></div>
+                    <!--<h2 class="fw-bolder mb-4">추천 제품 특성 그래프 </h2>
+                    <div class="col-md-6"></div>-->
+                    <script>
+                        var data = JSON.parse("{{ targetJson|escapejs }}")
+                        data = [
+                        {
+                         type: 'scatterpolar',
+                        r: data['product3'],
+                        theta: ['피부타입: {{skintype}}', '피부고민: {{skinconcern1}}', '피부고민: {{skinconcern2}}','속성: {{keywords2.0}}', '속성: {{keywords2.1}}'],
+                        fill: 'toself',
+                        marker : { color : 'green'}
+                        },
+                        ]
+
+                        layout = {
+                        polar: {
+                            radialaxis: {
+                            visible: true,
+                            range: [0, 1]
+                            }
+                        },
+                        title: {
+                            text: '추천 상품 속성 그래프',
+                            font: {
+                            size: 24
+                            },
+                            x : 0.47
+                        }
+                        }
+
+                    Plotly.newPlot("myDiv3", data, layout)
+                    </script>
+                <div class="right" style="float:left;"></div>
+                    <br><br><br><br>
+                    <p class="lead fw-bolder">"해당 제품은 고객님의 피부타입에 <span class="special">{{p_skin_rate.2}}%</span> 잘 맞아요."</p>
+                    <p class="lead fw-bolder">"동일한 피부고민 <span class="special">{{skinconcern1}}</span>(을)를 가진 고객들은 해당 제품군을 <span class="special">{{p_con_rate.0}}%</span> 구매했어요."</p>
+                    <p class="lead fw-bolder">"동일한 피부고민 <span class="special">{{skinconcern2}}</span>(을)를 가진 고객들은 해당 제품군을 <span class="special">{{p_con_rate.1}}%</span> 구매했어요."</p>
+                    <p class="lead fw-bolder">"해당 제품 리뷰에서 키워드 <span class="special">{{keywords2.0}}</span>(이)가 언급된 비율은 <span class="special">{{p_kw_fr.4}}%</span> 에요."</p>
+                    <p class="lead fw-bolder">"해당 제품 리뷰에서 키워드 <span class="special">{{keywords2.1}}</span>(이)가 언급된 비율은 <span class="special">{{p_kw_fr.5}}%</span> 에요."</p>
+                    <br><br><br><br>
+            </section>
+                    <!-- Footer-->
+                    <footer class="py-5 bg-dark">
+                        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p></div>
+                    </footer>
+                    <!-- Bootstrap core JS-->
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+                    <!-- Core theme JS-->
+                    <script src="{% static 'js/scripts.js' %}"></script>
+
+                    <!--<div>
+                        <input type="hidden" name="product_name_f" value="{{product_name_f.0}}">
+                        <input type="hidden" name="product_name_f" value="{{product_name_f.1}}">
+                        <input type="hidden" name="product_name_f" value="{{product_name_f.2}}">
+                    </div>
+                    
+                <div><input type="hidden" type="submit" onclick="location.href='ver2_result' "></div>-->
+    </body>
+</html>
